@@ -6,31 +6,29 @@ namespace ConsoleGameOfLife
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            string NL = Environment.NewLine;
+        private static string NL = Environment.NewLine;
 
-            var gliderNW =
+        private static string gliderNW =
                 "XX." + NL +
                 "X.X" + NL +
                 "X..";
 
-            var gliderNE =
+        private static string gliderNE =
                ".XX" + NL +
                "X.X" + NL +
                "..X";
 
-            var gliderSE =
+        private static string gliderSE =
                "..X" + NL +
                "X.X" + NL +
                ".XX";
 
-            var gliderSW =
+        private static string gliderSW =
                "X.." + NL +
                "X.X" + NL +
                "XX.";
 
-            var pulsar =
+        private static string pulsar =
                 "..............." + NL +
                 "...XXX...XXX..." + NL +
                 "..............." + NL +
@@ -47,25 +45,31 @@ namespace ConsoleGameOfLife
                 "...XXX...XXX..." + NL +
                 "...............";
 
-            var randomWorld = HelperMethods.GenerateRandomWorld(40, 40);
+        private static string randomWorld = HelperMethods.GenerateRandomWorld(40, 40);
 
-            var world = new World(randomWorld);
-
-            Console.WriteLine("Press 'q' to exit!");
-            do
+        static void Main(string[] args)
+        {
+            var pa = new ArgsParser(args);
+            //if (args[0] == "test")
             {
-                while (!Console.KeyAvailable)
+                var world = new World(randomWorld);
+
+                Console.WriteLine("Press 'q' to exit!");
+                do
                 {
-                    //if (Console.ReadKey(true).Key == ConsoleKey.Q)
-                    //    break;
-                    Console.Clear();
-                    var toPrint = HelperMethods.MatrixToString(world.CurrentWorld);
-                    Console.WriteLine(toPrint);
-                    world = world.NextGeneration();
-                    Thread.Sleep(150);
+                    while (!Console.KeyAvailable)
+                    {
+                        //if (Console.ReadKey(true).Key == ConsoleKey.Q)
+                        //    break;
+                        Console.Clear();
+                        var toPrint = HelperMethods.MatrixToString(world.CurrentWorld);
+                        Console.WriteLine(toPrint);
+                        world = world.NextGeneration();
+                        Thread.Sleep(150);
+                    }
                 }
+                while (Console.ReadKey(true).Key != ConsoleKey.Q);
             }
-            while (Console.ReadKey(true).Key != ConsoleKey.Q);
         }
     }
 }

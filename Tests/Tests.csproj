@@ -48,6 +48,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests\ArgParserTests.cs" />
     <Compile Include="Tests\CellTests.cs" />
     <Compile Include="Tests\HelperMethodsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,6 +58,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleGameOfLife\ConsoleGameOfLife.csproj">
+      <Project>{325fee16-4630-4ac8-af7e-1fc727ac4177}</Project>
+      <Name>ConsoleGameOfLife</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GameOfLife\GameOfLife.csproj">
       <Project>{0259b7cc-5c00-4ac0-b18a-1b34c05b86e4}</Project>
       <Name>GameOfLife</Name>
