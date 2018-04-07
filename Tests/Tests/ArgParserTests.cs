@@ -46,5 +46,49 @@ namespace Tests
             var args = new string[] { "flagless", "value" };
             var parser = new ArgsParser(args);
         }
-    } 
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void SuperfluousValue_Exception()
+        {
+            //gol -s glider pulsar
+            var args = new string[] { "-s", "glider", "pulsar" };
+            var parser = new ArgsParser(args);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void WNotFollewedByNunber_Exception()
+        {
+            var args = new string[] { "-s", "glider", "-w", "not a nat" };
+            var parser = new ArgsParser(args);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void WNotFollewedByPositiveNunber_Exception()
+        {
+            var args = new string[] { "-s", "glider", "-w", "-40" };
+            var parser = new ArgsParser(args);
+        }
+
+        [TestMethod]
+        public void GivingW40_SetsWidthAs40()
+        {
+            var args = new string[] { "-s", "glider", "-w", "40" };
+            var parser = new ArgsParser(args);
+            Assert.AreEqual(40, parser.Width);
+        }
+
+        [TestMethod]
+        public void OmittingW_WidthIs0()
+        {
+            var args = new string[] { "-s", "glider" };
+            var parser = new ArgsParser(args);
+            Assert.AreEqual(0, parser.Width);
+        }
+
+        //test: if -w is given, -h must be given also, and vice versa? if -s is random?
+        //test: -f mustn't be followed by a non-flag
+    }
 }
