@@ -16,8 +16,8 @@ namespace ConsoleGameOfLife
         public ArgsParser(string[] args)
         {
             SourceType = InitialWorld.Random;
-            Width = 0;
-            Height = 0;
+            Width = 1;
+            Height = 1;
             Fixed = false;
             Parse(args);
         }
@@ -26,7 +26,7 @@ namespace ConsoleGameOfLife
         {
             if (args.Length < 2)
                 throw new ArgumentOutOfRangeException(nameof(args), args, $"The size of {nameof(args)} is too small");
-            if (args.Length > 7)
+            if (args.Length > 5)
                 throw new ArgumentOutOfRangeException(nameof(args), args, $"The size of {nameof(args)} is too large");
             if (!IsFlag(args[0]))
                 throw new ArgumentException($"{nameof(args)} must start with a flag", nameof(args));
@@ -84,11 +84,11 @@ namespace ConsoleGameOfLife
                         break;
                     case "-w":
                         widthSet = true;
-                        populatePadding(pair, ref Width);
+                        populateSize(pair, ref Width);
                         break;
                     case "-h":
                         heightSet = true;
-                        populatePadding(pair, ref Height);
+                        populateSize(pair, ref Height);
                         break;
                     case "-f":
                         Fixed = true;
@@ -99,16 +99,16 @@ namespace ConsoleGameOfLife
             }
             if (this.SourceType == InitialWorld.Random && (!widthSet || !heightSet))
                 throw new ArgumentException("Both width and height must be set if a random world is chosen");
-            if (this.SourceType == InitialWorld.Random && (Width == 0 || Height == 0))
-                throw new ArgumentException("Both width and height must be greater than zero if a random world is chosen");
+            if (this.SourceType != InitialWorld.Random && (widthSet || heightSet))
+                throw new ArgumentException("The width and height can only be set for a random world");
 
             //local functions:
 
-            void populatePadding(KeyValuePair<string, string> pair, ref int padding)
+            void populateSize(KeyValuePair<string, string> pair, ref int size)
             {
-                if (int.TryParse(pair.Value, out int val) && val >= 0)
+                if (int.TryParse(pair.Value, out int val) && val > 0)
                 {
-                    padding = val;
+                    size = val;
                 }
                 else
                     throw new ArgumentException($"{nameof(pair.Key)} must be an integer, greater or equal to zero");
