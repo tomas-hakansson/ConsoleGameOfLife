@@ -49,7 +49,18 @@ namespace ConsoleGameOfLife
 
         static void Main(string[] args)
         {
-            var pa = new ArgsParser(args);
+            try
+            {
+                var pa = new ArgsParser(args);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+
+            }
+            catch(ArgumentException ex)
+            {
+
+            }
             //if (args[0] == "test")
             {
                 var world = new World(randomWorld);

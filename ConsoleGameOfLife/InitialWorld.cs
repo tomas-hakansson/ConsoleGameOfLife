@@ -2,6 +2,8 @@
 {
     public enum InitialWorld
     {
-        Random
+        Random,
+        Sample,
+        Raw
     }
 }

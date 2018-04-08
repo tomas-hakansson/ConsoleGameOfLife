@@ -7,12 +7,15 @@ namespace ConsoleGameOfLife
 {
     public class ArgsParser
     {
+        public InitialWorld SourceType;
+        public string Source;
         public int Width;
         public int Height;
         public bool Fixed;
 
         public ArgsParser(string[] args)
         {
+            SourceType = InitialWorld.Random;
             Width = 0;
             Height = 0;
             Fixed = false;
@@ -60,27 +63,48 @@ namespace ConsoleGameOfLife
 
         private void PopulateArgParser(Dictionary<string, string> flagDict)
         {
+            var widthSet = false;
+            var heightSet = false;
+
             foreach (var pair in flagDict)
             {
                 switch (pair.Key)
                 {
                     case "-s":
+                        if (pair.Value[0] == '#')
+                        {
+                            SourceType = InitialWorld.Raw;
+                            Source = pair.Value.Replace("#", string.Empty).Replace("|", Environment.NewLine);
+                        }
+                        else
+                        {
+                            SourceType = InitialWorld.Sample;
+                            Source = pair.Value;
+                        }
                         break;
                     case "-w":
-                        PopulatePadding(pair, ref Width);
+                        widthSet = true;
+                        populatePadding(pair, ref Width);
                         break;
                     case "-h":
-                        PopulatePadding(pair, ref Height);
+                        heightSet = true;
+                        populatePadding(pair, ref Height);
                         break;
                     case "-f":
+                        Fixed = true;
+                        break;
                     default:
                         break;
                 }
             }
+            if (this.SourceType == InitialWorld.Random && (!widthSet || !heightSet))
+                throw new ArgumentException("Both width and height must be set if a random world is chosen");
+            if (this.SourceType == InitialWorld.Random && (Width == 0 || Height == 0))
+                throw new ArgumentException("Both width and height must be greater than zero if a random world is chosen");
 
             //local functions:
 
-            void PopulatePadding(KeyValuePair<string, string> pair, ref int padding)
+            void populatePadding(KeyValuePair<string, string> pair, ref int padding)
             {
                 if (int.TryParse(pair.Value, out int val) && val >= 0)
                 {

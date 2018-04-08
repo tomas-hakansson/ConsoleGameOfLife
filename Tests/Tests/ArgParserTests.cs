@@ -7,26 +7,12 @@ namespace Tests
     [TestClass]
     public class ArgParserTests
     {
-        //[TestMethod]
-        //[Ignore]
-        //public void MyTestMethod()
-        //{
-        //    //gol -w 50 -h 50
-        //    var args = new string[] { "-w" ,"50", "-h", "50" };
-        //    var parser = new ArgsParser(args);
-        //    Assert.AreEqual(parser.World, InitialWorld.Random);
-        //    Assert.IsTrue(parser.Size);
-        //    Assert.AreEqual(parser.Width, 50);
-        //    Assert.AreEqual(parser.Height, 50);
-        //    Assert.IsFalse(parser.Fixed);
-        //}
-
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void ToFew_Exception()
         {
             var args = new string[] { "-s" };
-            var parser = new ArgsParser(args);
+            new ArgsParser(args);
         }
 
         [TestMethod]
@@ -36,7 +22,7 @@ namespace Tests
             //gol -s pulsar -w 10 -h 10 -f oneTooMany
 
             var args = new string[] { "-s", "pulsar", "-w", "10", "-h", "10", "-f", "oneTooMany" };
-            var parser = new ArgsParser(args);
+            new ArgsParser(args);
         }
 
         [TestMethod]
@@ -44,7 +30,7 @@ namespace Tests
         public void DoesNotStartWithAFlag_Exception()
         {
             var args = new string[] { "flagless", "value" };
-            var parser = new ArgsParser(args);
+            new ArgsParser(args);
         }
 
         [TestMethod]
@@ -53,7 +39,7 @@ namespace Tests
         {
             //gol -s glider pulsar
             var args = new string[] { "-s", "glider", "pulsar" };
-            var parser = new ArgsParser(args);
+            new ArgsParser(args);
         }
 
         [TestMethod]
@@ -61,7 +47,7 @@ namespace Tests
         public void WNotFollewedByNunber_Exception()
         {
             var args = new string[] { "-s", "glider", "-w", "not a nat" };
-            var parser = new ArgsParser(args);
+            new ArgsParser(args);
         }
 
         [TestMethod]
@@ -69,7 +55,31 @@ namespace Tests
         public void WNotFollewedByPositiveNunber_Exception()
         {
             var args = new string[] { "-s", "glider", "-w", "-40" };
-            var parser = new ArgsParser(args);
+            new ArgsParser(args);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void IfRandom_BothWidthAndHeightMustBeGiven()
+        {
+            var args = new string[] { "-w", "40" };
+            new ArgsParser(args);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void IfRandom_WidthMustBeGreaterThanZero()
+        {
+            var args = new string[] { "-w", "0", "-h", "40" };
+            new ArgsParser(args);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void IfRandom_HeightMustBeGreaterThanZero()
+        {
+            var args = new string[] { "-w", "40", "-h", "0" };
+            new ArgsParser(args);
         }
 
         [TestMethod]
@@ -88,7 +98,61 @@ namespace Tests
             Assert.AreEqual(0, parser.Width);
         }
 
-        //test: if -w is given, -h must be given also, and vice versa? if -s is random?
-        //test: -f mustn't be followed by a non-flag
+        [TestMethod]
+        public void OmittingF_FixedIsFalse()
+        {
+            var args = new string[] { "-s", "glider" };
+            var parser = new ArgsParser(args);
+            Assert.IsFalse(parser.Fixed);
+        }
+
+        [TestMethod]
+        public void GivingF_FixedIsTrue()
+        {
+            var args = new string[] { "-s", "glider", "-f" };
+            var parser = new ArgsParser(args);
+            Assert.IsTrue(parser.Fixed);
+        }
+
+        [TestMethod]
+        public void OmittingS_SourceTypeIsRandom()
+        {
+            var args = new string[] { "-w", "40", "-h", "40" };
+            var parser = new ArgsParser(args);
+            Assert.AreEqual(InitialWorld.Random, parser.SourceType);
+        }
+
+        [TestMethod]
+        public void SGivenPulsar_SourceTypeIsSample()
+        {
+            var args = new string[] { "-s", "pulsar" };
+            var parser = new ArgsParser(args);
+            Assert.AreEqual(InitialWorld.Sample, parser.SourceType);
+        }
+
+        [TestMethod]
+        public void SStartingWithHash_SourceTypeIsRaw()
+        {
+            var args = new string[] { "-s", "#X.|.X" };
+            var parser = new ArgsParser(args);
+            Assert.AreEqual(InitialWorld.Raw, parser.SourceType);
+        }
+
+        [TestMethod]
+        public void SGivenPulsar_SourceValIsPulsar()
+        {
+            var args = new string[] { "-s", "pulsar" };
+            var parser = new ArgsParser(args);
+            Assert.AreEqual("pulsar", parser.Source);
+        }
+
+        [TestMethod]
+        public void SGivenRaw_RawHasCorrectFormat()
+        {
+            var args = new string[] { "-s", "#X.|.X|XX" };
+            var parser = new ArgsParser(args);
+            var actualFormat = "X." + Environment.NewLine + ".X" + Environment.NewLine + "XX";
+            Assert.AreEqual(actualFormat, parser.Source);
+        }
     }
 }
