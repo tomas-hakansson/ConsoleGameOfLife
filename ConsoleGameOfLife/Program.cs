@@ -5,65 +5,30 @@ using System.Threading;
 namespace ConsoleGameOfLife
 {
     class Program
-    {
-        private static string NL = Environment.NewLine;
-
-        private static string gliderNW =
-                "XX." + NL +
-                "X.X" + NL +
-                "X..";
-
-        private static string gliderNE =
-               ".XX" + NL +
-               "X.X" + NL +
-               "..X";
-
-        private static string gliderSE =
-               "..X" + NL +
-               "X.X" + NL +
-               ".XX";
-
-        private static string gliderSW =
-               "X.." + NL +
-               "X.X" + NL +
-               "XX.";
-
-        private static string pulsar =
-                "..............." + NL +
-                "...XXX...XXX..." + NL +
-                "..............." + NL +
-                ".X....X.X....X." + NL +
-                ".X....X.X....X." + NL +
-                ".X....X.X....X." + NL +
-                "...XXX...XXX..." + NL +
-                "..............." + NL +
-                "...XXX...XXX..." + NL +
-                ".X....X.X....X." + NL +
-                ".X....X.X....X." + NL +
-                ".X....X.X....X." + NL +
-                "..............." + NL +
-                "...XXX...XXX..." + NL +
-                "...............";
-
-        private static string randomWorld = HelperMethods.GenerateRandomWorld(40, 40);
-
+    {        
         static void Main(string[] args)
         {
             try
             {
+                World world = null;
                 var pa = new ArgsParser(args);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
 
-            }
-            catch(ArgumentException ex)
-            {
-
-            }
-            //if (args[0] == "test")
-            {
-                var world = new World(randomWorld);
+                switch (pa.SourceType)
+                {
+                    case InitialWorld.Random:
+                        var ranWorld = HelperMethods.GenerateRandomWorld(pa.Width, pa.Height);
+                        world = new World(ranWorld);
+                        break;
+                    case InitialWorld.Sample:
+                        var sample = Samples.Get(pa.Source);
+                        world = new World(sample);
+                        break;
+                    case InitialWorld.Raw:
+                        world = new World(pa.Source);
+                        break;
+                    default:
+                        break;
+                }
 
                 Console.WriteLine("Press 'q' to exit!");
                 do
@@ -80,6 +45,11 @@ namespace ConsoleGameOfLife
                     }
                 }
                 while (Console.ReadKey(true).Key != ConsoleKey.Q);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+                Console.ReadKey();
             }
         }
     }
