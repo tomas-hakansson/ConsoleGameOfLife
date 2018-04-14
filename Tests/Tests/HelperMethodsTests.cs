@@ -8,19 +8,17 @@ namespace Tests
     [TestClass]
     public class HelperMethodsTests
     {
-        string NL = Environment.NewLine;
-
         [TestMethod]
         public void GetNeigbourStatesForCenterCell()
         {
             var strState =
-                "OOO" + NL +
-                "XXX" + NL +
+                "OOO|" +
+                "XXX|" +
                 "OOO";
 
-            var state = HelperMethods.StringToMatrix(strState);
+            var state = HelperMethods.StringToMatrix(strState, false);
 
-            LivingNeighbours neighbourStates = HelperMethods.NrOfLivingNeghbours(state, 1, 1);
+            LivingNeighbours neighbourStates = HelperMethods.NrOfSuroundingLivingNeighbours(state, 1, 1);
 
             Assert.AreEqual(LivingNeighbours.C2, neighbourStates);
         }
@@ -29,13 +27,13 @@ namespace Tests
         public void GetNeigbourStatesForTopEdgeCell()
         {
             var strState =
-                "OOO" + NL +
-                "XXX" + NL +
+                "OOO|" +
+                "XXX|" +
                 "OOO";
 
-            var state = HelperMethods.StringToMatrix(strState);
+            var state = HelperMethods.StringToMatrix(strState, false);
 
-            LivingNeighbours neighbourStates = HelperMethods.NrOfLivingNeghbours(state, 1, 0);
+            LivingNeighbours neighbourStates = HelperMethods.NrOfSuroundingLivingNeighbours(state, 1, 0);
 
             Assert.AreEqual(LivingNeighbours.C3, neighbourStates);
         }
@@ -44,13 +42,13 @@ namespace Tests
         public void GetNeigbourStatesForLeftEdgeCell()
         {
             var strState =
-                "OOO" + NL +
-                "XXX" + NL +
+                "OOO|" +
+                "XXX|" +
                 "OOO";
 
-            var state = HelperMethods.StringToMatrix(strState);
+            var state = HelperMethods.StringToMatrix(strState, false);
 
-            LivingNeighbours neighbourStates = HelperMethods.NrOfLivingNeghbours(state, 0, 1);
+            LivingNeighbours neighbourStates = HelperMethods.NrOfSuroundingLivingNeighbours(state, 0, 1);
 
             Assert.AreEqual(LivingNeighbours.C1, neighbourStates);
         }
@@ -59,13 +57,13 @@ namespace Tests
         public void GetNeigbourStatesForBottomEdgeCell()
         {
             var strState =
-                "OOO" + NL +
-                "XXX" + NL +
+                "OOO|" +
+                "XXX|" +
                 "OOO";
 
-            var state = HelperMethods.StringToMatrix(strState);
+            var state = HelperMethods.StringToMatrix(strState, false);
 
-            LivingNeighbours neighbourStates = HelperMethods.NrOfLivingNeghbours(state, 1, 2);
+            LivingNeighbours neighbourStates = HelperMethods.NrOfSuroundingLivingNeighbours(state, 1, 2);
 
             Assert.AreEqual(LivingNeighbours.C3, neighbourStates);
         }
@@ -74,13 +72,13 @@ namespace Tests
         public void GetNeigbourStatesForRightEdgeCell()
         {
             var strState =
-                "OOO" + NL +
-                "XXX" + NL +
+                "OOO|" +
+                "XXX|" +
                 "OOO";
 
-            var state = HelperMethods.StringToMatrix(strState);
+            var state = HelperMethods.StringToMatrix(strState, false);
 
-            LivingNeighbours neighbourStates = HelperMethods.NrOfLivingNeghbours(state, 2, 1);
+            LivingNeighbours neighbourStates = HelperMethods.NrOfSuroundingLivingNeighbours(state, 2, 1);
 
             Assert.AreEqual(LivingNeighbours.C1, neighbourStates);
         }
@@ -89,13 +87,13 @@ namespace Tests
         public void GetNeigbourStatesForTopLeftEdgeCell()
         {
             var strState =
-                "OOO" + NL +
-                "XXX" + NL +
+                "OOO|" +
+                "XXX|" +
                 "OOO";
 
-            var state = HelperMethods.StringToMatrix(strState);
+            var state = HelperMethods.StringToMatrix(strState, false);
 
-            LivingNeighbours neighbourStates = HelperMethods.NrOfLivingNeghbours(state, 0, 0);
+            LivingNeighbours neighbourStates = HelperMethods.NrOfSuroundingLivingNeighbours(state, 0, 0);
 
             Assert.AreEqual(LivingNeighbours.C2, neighbourStates);
         }
@@ -104,13 +102,13 @@ namespace Tests
         public void GetNeigbourStatesForBottomRightEdgeCell()
         {
             var strState =
-                "OOO" + NL +
-                "XXX" + NL +
+                "OOO|" +
+                "XXX|" +
                 "OOO";
 
-            var state = HelperMethods.StringToMatrix(strState);
+            var state = HelperMethods.StringToMatrix(strState, false);
 
-            LivingNeighbours neighbourStates = HelperMethods.NrOfLivingNeghbours(state, 2, 2);
+            LivingNeighbours neighbourStates = HelperMethods.NrOfSuroundingLivingNeighbours(state, 2, 2);
 
             Assert.AreEqual(LivingNeighbours.C2, neighbourStates);
         }
@@ -119,11 +117,11 @@ namespace Tests
         public void StringBlinker_toListOfLists()
         {
             var strGlider =
-                "OOX" + NL +
-                "XOX" + NL +
+                "OOX|" +
+                "XOX|" +
                 "OXX";
 
-            var actual = HelperMethods.StringToMatrix(strGlider);
+            var actual = HelperMethods.StringToMatrix(strGlider, false);
 
             var expected = new List<List<Cell>>
             {
@@ -155,6 +153,7 @@ namespace Tests
 
             var actual = HelperMethods.MatrixToString(lstGlider);
 
+            var NL = Environment.NewLine;
             var expected =
                 "..X" + NL +
                 "X.X" + NL +

@@ -6,7 +6,7 @@ namespace GameOfLife
 {
     public class HelperMethods
     {
-        public static List<List<Cell>> GetLivingNeighbours(List<List<Cell>> nextGeneration)
+        public static List<List<Cell>> GetLivingNeighbours(List<List<Cell>> nextGeneration, bool fixedSize = false)
         {
             var x = 0;
             var y = 0;
@@ -14,8 +14,12 @@ namespace GameOfLife
             {
                 foreach (var currentCell in rows)
                 {
-                    var currentCellsLivingNeighbours = NrOfLivingNeghbours(nextGeneration, x, y);
-                    currentCell.LivingNeighbours = currentCellsLivingNeighbours;
+                    currentCell.LivingNeighbours = NrOfSuroundingLivingNeighbours(nextGeneration, x, y);
+                    if (fixedSize)
+                    {
+                        var edge = new Edge(nextGeneration);
+                        currentCell.LivingNeighbours += edge.NeighboursAtOpposite(x, y);
+                    }
                     x++;
                 }
                 x = 0;
@@ -25,7 +29,7 @@ namespace GameOfLife
             return nextGeneration;
         }
 
-        public static LivingNeighbours NrOfLivingNeghbours(List<List<Cell>> state, int xOrigin, int yOrigin)
+        public static LivingNeighbours NrOfSuroundingLivingNeighbours(List<List<Cell>> state, int xOrigin, int yOrigin)
         {
             var nr = 0;
 
@@ -50,10 +54,10 @@ namespace GameOfLife
             return (LivingNeighbours)nr;
         }
 
-        public static List<List<Cell>> StringToMatrix(string source)
+        public static List<List<Cell>> StringToMatrix(string source, bool fixedSize)
         {
             var world = new List<List<Cell>>();
-
+            source = source.Replace("|", Environment.NewLine);
             var strRows = source.Split(new char[] { }).Where(s => s != "");
             foreach (var strRow in strRows)
             {
@@ -69,7 +73,7 @@ namespace GameOfLife
                 }
                 world.Add(row);
             }
-            return GetLivingNeighbours(world);
+            return GetLivingNeighbours(world, fixedSize);
         }
 
         public static string MatrixToString(List<List<Cell>> matrix)

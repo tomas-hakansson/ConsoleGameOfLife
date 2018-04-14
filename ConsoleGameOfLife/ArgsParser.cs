@@ -11,14 +11,14 @@ namespace ConsoleGameOfLife
         public string Source;
         public int Width;
         public int Height;
-        public bool Fixed;
+        public bool FixedSize;
 
         public ArgsParser(string[] args)
         {
             SourceType = InitialWorld.Random;
             Width = 1;
             Height = 1;
-            Fixed = false;
+            FixedSize = false;
             Parse(args);
         }
 
@@ -74,7 +74,7 @@ namespace ConsoleGameOfLife
                         if (pair.Value[0] == '#')
                         {
                             SourceType = InitialWorld.Raw;
-                            Source = pair.Value.Replace("#", string.Empty).Replace("|", Environment.NewLine);
+                            Source = pair.Value.Replace("#", string.Empty);
                         }
                         else
                         {
@@ -91,7 +91,7 @@ namespace ConsoleGameOfLife
                         populateSize(pair, ref Height);
                         break;
                     case "-f":
-                        Fixed = true;
+                        FixedSize = true;
                         break;
                     default:
                         break;

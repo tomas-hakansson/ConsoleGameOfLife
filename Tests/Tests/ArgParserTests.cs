@@ -44,7 +44,7 @@ namespace Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void WNotFollewedByNumber_Exception()
+        public void WNotFollowedByNumber_Exception()
         {
             var args = new string[] { "-s", "glider", "-w", "not a nat" };
             new ArgsParser(args);
@@ -52,7 +52,7 @@ namespace Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void WNotFollewedByPositiveNunber_Exception()
+        public void WNotFollowedByPositiveNunber_Exception()
         {
             var args = new string[] { "-s", "glider", "-w", "-40" };
             new ArgsParser(args);
@@ -95,7 +95,7 @@ namespace Tests
         {
             var args = new string[] { "-s", "glider" };
             var parser = new ArgsParser(args);
-            Assert.IsFalse(parser.Fixed);
+            Assert.IsFalse(parser.FixedSize);
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace Tests
         {
             var args = new string[] { "-s", "glider", "-f" };
             var parser = new ArgsParser(args);
-            Assert.IsTrue(parser.Fixed);
+            Assert.IsTrue(parser.FixedSize);
         }
 
         [TestMethod]
@@ -143,7 +143,7 @@ namespace Tests
         {
             var args = new string[] { "-s", "#X.|.X|XX" };
             var parser = new ArgsParser(args);
-            var actualFormat = "X." + Environment.NewLine + ".X" + Environment.NewLine + "XX";
+            var actualFormat = "X.|.X|XX";
             Assert.AreEqual(actualFormat, parser.Source);
         }
     }

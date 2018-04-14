@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cell.cs" />
+    <Compile Include="Edge.cs" />
     <Compile Include="ExtendWorld.cs" />
     <Compile Include="HelperMethods.cs" />
     <Compile Include="LivingNeighbours.cs" />

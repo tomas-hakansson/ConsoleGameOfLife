@@ -1,39 +1,39 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace GameOfLife
 {
     public class World
     {
         public List<List<Cell>> CurrentWorld;
+        private bool FixedSize;
 
-        public World(List<List<Cell>> CurrentWorld)
+        public World(List<List<Cell>> CurrentWorld, bool fixedSize = false)
         {
-            this.CurrentWorld = CurrentWorld;
+            this.CurrentWorld = HelperMethods.GetLivingNeighbours(CurrentWorld, fixedSize);
+            this.FixedSize = fixedSize;
         }
 
-        public World(string initialWorld)
+        public World(string initialWorld, bool fixedSize = false)
         {
-            this.CurrentWorld = HelperMethods.StringToMatrix(initialWorld);
+            this.CurrentWorld = HelperMethods.StringToMatrix(initialWorld, fixedSize);
+            this.FixedSize = fixedSize;
         }
 
         public World NextGeneration()
         {
-            var extendWorld = new ExtendWorld(CurrentWorld);
+            if (!FixedSize)
+            {
+                var extendWorld = new ExtendWorld(CurrentWorld);
+                CurrentWorld = extendWorld.Extending();
+                //because the extended world has no neighbour information.
+                CurrentWorld = HelperMethods.GetLivingNeighbours(CurrentWorld);
+            }
 
-            CurrentWorld = extendWorld.ExtendingWorld();
+            var nextGeneration = GetNewState(CurrentWorld);
 
-            var extendedWorld = HelperMethods.GetLivingNeighbours(CurrentWorld);
-
-            //wraparoundWorld...
-
-            var nextGeneration = GetNewState(extendedWorld);
-
-            nextGeneration = HelperMethods.GetLivingNeighbours(nextGeneration);
-
-            return new World(nextGeneration);
+            return new World(nextGeneration, FixedSize);
         }
-                
+
         private List<List<Cell>> GetNewState(List<List<Cell>> oldState)
         {
             var nextGeneration = new List<List<Cell>>();

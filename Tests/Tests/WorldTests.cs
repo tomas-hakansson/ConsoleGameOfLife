@@ -1,20 +1,17 @@
 ﻿using GameOfLife;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Tests
 {
     [TestClass]
     public class WorldTests
     {
-        string NL = Environment.NewLine;
-
         [TestMethod]
         public void ABlinker_blinks()
         {
             var strInitial =
-                "OOO" + NL +
-                "XXX" + NL +
+                "OOO|" +
+                "XXX|" +
                 "OOO";
 
             var world = new World(strInitial);
@@ -22,11 +19,11 @@ namespace Tests
             var nextGeneration = world.NextGeneration();
 
             var strNext =
-                "OXO" + NL +
-                "OXO" + NL +
+                "OXO|" +
+                "OXO|" +
                 "OXO";
 
-            var expectedGeneration = HelperMethods.StringToMatrix(strNext);
+            var expectedGeneration = HelperMethods.StringToMatrix(strNext, false);
 
             if (nextGeneration.CurrentWorld.Count == expectedGeneration.Count)
             {
@@ -43,11 +40,11 @@ namespace Tests
         public void ABlinker_blinksTwice()
         {
             var strInitial =
-                "OOO" + NL +
-                "XXX" + NL +
+                "OOO|" +
+                "XXX|" +
                 "OOO";
 
-            var currentGeneration = HelperMethods.StringToMatrix(strInitial);
+            var currentGeneration = HelperMethods.StringToMatrix(strInitial, false);
             var world = new World(currentGeneration);
 
             var nextGeneration = world.NextGeneration().NextGeneration();
@@ -67,8 +64,8 @@ namespace Tests
         public void AGlider_Glides()
         {
             var strInitial =
-                "OOXO" + NL +
-                "XOXO" + NL +
+                "OOXO|" +
+                "XOXO|" +
                 "OXXO";
 
             var world = new World(strInitial);
@@ -76,11 +73,11 @@ namespace Tests
             var nextGeneration = world.NextGeneration();
 
             var strNext =
-                "OXOO" + NL +
-                "OOXX" + NL +
+                "OXOO|" +
+                "OOXX|" +
                 "OXXO";
 
-            var expectedGeneration = HelperMethods.StringToMatrix(strNext);
+            var expectedGeneration = HelperMethods.StringToMatrix(strNext, false);
 
             if (nextGeneration.CurrentWorld.Count == expectedGeneration.Count)
             {
@@ -98,8 +95,8 @@ namespace Tests
         {
             
             var strInitial =
-                "OOXO" + NL +
-                "XOXO" + NL +
+                "OOXO|" +
+                "XOXO|" +
                 "OXXO";
 
             var world = new World(strInitial);
@@ -107,11 +104,11 @@ namespace Tests
             var nextGeneration = world.NextGeneration().NextGeneration();
 
             var strNext =
-                "OOXO" + NL +
-                "OOOX" + NL +
+                "OOXO|" +
+                "OOOX|" +
                 "OXXX";
 
-            var expectedGeneration = HelperMethods.StringToMatrix(strNext);
+            var expectedGeneration = HelperMethods.StringToMatrix(strNext, false);
 
             if (nextGeneration.CurrentWorld.Count == expectedGeneration.Count)
             {
@@ -128,8 +125,8 @@ namespace Tests
         public void TheWorldCanGrow_LeftAndRight()
         {
             var strInitial =
-                "X" + NL +
-                "X" + NL +
+                "X|" +
+                "X|" +
                 "X";
 
             var world = new World(strInitial);
@@ -137,11 +134,11 @@ namespace Tests
             var actualGeneration = world.NextGeneration();
 
             var strNext =
-                "OOO" + NL +
-                "XXX" + NL +
+                "OOO|" +
+                "XXX|" +
                 "OOO";
 
-            var expectedGeneration = HelperMethods.StringToMatrix(strNext);
+            var expectedGeneration = HelperMethods.StringToMatrix(strNext, false);
 
 
 
@@ -166,13 +163,47 @@ namespace Tests
             var actualGeneration = world.NextGeneration();
 
             var strNext =
-                "OXO" + NL +
-                "OXO" + NL +
+                "OXO|" +
+                "OXO|" +
                 "OXO";
 
-            var expectedGeneration = HelperMethods.StringToMatrix(strNext);
+            var expectedGeneration = HelperMethods.StringToMatrix(strNext, false);
 
 
+
+            if (actualGeneration.CurrentWorld.Count == expectedGeneration.Count)
+            {
+                for (int i = 0; i < expectedGeneration.Count; i++)
+                {
+                    CollectionAssert.AreEqual(expectedGeneration[i], actualGeneration.CurrentWorld[i]);
+                }
+            }
+            else
+                Assert.Fail("the two collections have different counts");
+        }
+
+        [TestMethod]
+        public void Wrap_glider_RightToLeft()
+        {
+            var strInitial =
+                "........|" +
+                ".......X|" +
+                ".....X.X|" +
+                "......XX|" +
+                "........";
+
+            var world = new World(strInitial, true);
+
+            var actualGeneration = world.NextGeneration();
+
+            var strNext =
+                "........|" +
+                "......X.|" +
+                "X......X|" +
+                "......XX|" +
+                "........";
+
+            var expectedGeneration = HelperMethods.StringToMatrix(strNext, true);
 
             if (actualGeneration.CurrentWorld.Count == expectedGeneration.Count)
             {
