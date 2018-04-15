@@ -21,7 +21,7 @@ namespace Tests
         {
             //gol -s pulsar -w 10 -h 10 -f oneTooMany
 
-            var args = new string[] { "-w", "40", "-h", "40", "-f", "oneTooMany" };
+            var args = new string[] { "-s", "glider", "-w", "40", "-h", "40", "-f", "oneTooMany" };
             new ArgsParser(args);
         }
 
@@ -63,14 +63,6 @@ namespace Tests
         public void IfRandom_BothWidthAndHeightMustBeGiven()
         {
             var args = new string[] { "-w", "40" };
-            new ArgsParser(args);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void SampleFollowedByWidth_Exception()
-        {
-            var args = new string[] { "-s", "pulsar", "-w", "40"};
             new ArgsParser(args);
         }
 

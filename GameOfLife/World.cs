@@ -26,7 +26,7 @@ namespace GameOfLife
             {
                 var extendWorld = new ExtendWorld(CurrentWorld);
                 CurrentWorld = extendWorld.Extending();
-                //because the extended world has no neighbour information.
+
                 var neighbour = new Neighbour(CurrentWorld);
                 CurrentWorld = neighbour.UpdateWorldWithLivingNeighbours();
             }

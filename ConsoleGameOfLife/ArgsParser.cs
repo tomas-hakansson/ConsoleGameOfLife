@@ -26,7 +26,7 @@ namespace ConsoleGameOfLife
         {
             if (args.Length < 2)
                 throw new ArgumentOutOfRangeException(nameof(args), args, $"The size of {nameof(args)} is too small");
-            if (args.Length > 5)
+            if (args.Length > 7)
                 throw new ArgumentOutOfRangeException(nameof(args), args, $"The size of {nameof(args)} is too large");
             if (!IsFlag(args[0]))
                 throw new ArgumentException($"{nameof(args)} must start with a flag", nameof(args));
@@ -99,8 +99,6 @@ namespace ConsoleGameOfLife
             }
             if (this.SourceType == InitialWorld.Random && (!widthSet || !heightSet))
                 throw new ArgumentException("Both width and height must be set if a random world is chosen");
-            if (this.SourceType != InitialWorld.Random && (widthSet || heightSet))
-                throw new ArgumentException("The width and height can only be set for a random world");
 
             //local functions:
 

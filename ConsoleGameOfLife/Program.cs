@@ -33,6 +33,13 @@ namespace ConsoleGameOfLife
                 {
                     while (!Console.KeyAvailable)
                     {
+                        var currentWorld = world.CurrentWorld;
+                        var width = currentWorld[0].Count;
+                        var height = currentWorld.Count;
+                        if (pa.SourceType != InitialWorld.Random && pa.FixedSize && (width < pa.Width || height < pa.Height))
+                            world = new World(world.CurrentWorld, false);
+                        else if (pa.SourceType != InitialWorld.Random && pa.FixedSize)
+                            world = new World(world.CurrentWorld, pa.FixedSize);
                         //if (Console.ReadKey(true).Key == ConsoleKey.Q)
                         //    break;
                         Console.Clear();
