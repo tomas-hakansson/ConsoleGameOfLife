@@ -54,6 +54,8 @@ namespace ConsoleGameOfLife
                 case "pulsar":
                     result = pulsar;
                     break;
+                default:
+                    throw new ArgumentException($"the given sample name {name} isn't available!");
             }
             return result;
         }

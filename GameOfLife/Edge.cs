@@ -39,14 +39,28 @@ namespace GameOfLife
 
             var nr = 0;
             if (x == 0)
-                nr = GetNeighboursOfMax3Column(_width, y);
+                nr += GetNeighboursOfMax3Column(_width, y);
             if (x == _width)
-                nr = GetNeighboursOfMax3Column(0, y);
+                nr += GetNeighboursOfMax3Column(0, y);
             if (y == 0)
-                nr = GetNeighboursOfMax3Row(x, _height);
+                nr += GetNeighboursOfMax3Row(x, _height);
             if (y == _height)
-                nr = GetNeighboursOfMax3Row(x, 0);
+                nr += GetNeighboursOfMax3Row(x, 0);
+            nr += GetNeighboursAtOppositeCorner(x, y);
             return nr;
+        }
+
+        private int GetNeighboursAtOppositeCorner(int x, int y)//todo: move all neigbour getting methods to other class.
+        {
+            if (x == 0 && y == 0 && CellIsAlive(_width, _height))
+                return 1;
+            if (x == 0 && y == _height && CellIsAlive(_width, 0))
+                return 1;
+            if (x == _width && y == 0 && CellIsAlive(0, _height))
+                return 1;
+            if (x == _width && y == _height && CellIsAlive(0, 0))
+                return 1;
+            return 0;
         }
 
         private int GetNeighboursOfMax3Column(int column, int centerHeight)
@@ -57,8 +71,7 @@ namespace GameOfLife
             var neighbours = 0;
             for (int y = fromY; y <= toY; y++)
             {
-                var currentState =_currentWorld[y][column].State;
-                if (currentState == State.Alive)
+                if (CellIsAlive(column, y))
                     neighbours++;
             }
 
@@ -68,17 +81,21 @@ namespace GameOfLife
         private int GetNeighboursOfMax3Row(int centerWidth, int row)
         {
             var fromX = centerWidth == 0 ? centerWidth : centerWidth - 1;
-            var toX = centerWidth == _currentWorld[0].Count -1 ? centerWidth : centerWidth + 1;
+            var toX = centerWidth == _currentWorld[0].Count - 1 ? centerWidth : centerWidth + 1;
 
             var neighbours = 0;
             for (int x = fromX; x <= toX; x++)
             {
-                var currentState = _currentWorld[row][x].State;
-                if (currentState == State.Alive)
+                if (CellIsAlive(x, row))
                     neighbours++;
             }
 
             return neighbours;
+        }
+
+        private bool CellIsAlive(int x, int y)
+        {
+            return _currentWorld[y][x].State == State.Alive;
         }
 
         public bool IsAtEdge(int x, int y)

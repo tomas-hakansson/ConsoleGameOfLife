@@ -183,7 +183,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void Wrap_glider_RightToLeft()
+        public void Wrap_glider_Test1()
         {
             var strInitial =
                 "........|" +
@@ -202,6 +202,74 @@ namespace Tests
                 "X......X|" +
                 "......XX|" +
                 "........";
+
+            var expectedGeneration = HelperMethods.StringToMatrix(strNext, true);
+
+            if (actualGeneration.CurrentWorld.Count == expectedGeneration.Count)
+            {
+                for (int i = 0; i < expectedGeneration.Count; i++)
+                {
+                    CollectionAssert.AreEqual(expectedGeneration[i], actualGeneration.CurrentWorld[i]);
+                }
+            }
+            else
+                Assert.Fail("the two collections have different counts");
+        }
+
+        [TestMethod]
+        public void Wrap_glider_Test2()
+        {
+            var strInitial =
+                "X.....XX|" +
+                "........|" +
+                "........|" +
+                ".......X|" +
+                "X.......";
+
+            var world = new World(strInitial, true);
+
+            var actualGeneration = world.NextGeneration();
+
+            var strNext =
+                "X......X|" +
+                ".......X|" +
+                "........|" +
+                "........|" +
+                "X.....X.";
+
+            var expectedGeneration = HelperMethods.StringToMatrix(strNext, true);
+
+            if (actualGeneration.CurrentWorld.Count == expectedGeneration.Count)
+            {
+                for (int i = 0; i < expectedGeneration.Count; i++)
+                {
+                    CollectionAssert.AreEqual(expectedGeneration[i], actualGeneration.CurrentWorld[i]);
+                }
+            }
+            else
+                Assert.Fail("the two collections have different counts");
+        }
+
+        [TestMethod]
+        public void Wrap_glider_Test3()
+        {
+            var strInitial =
+                "......XX|" +
+                "........|" +
+                "........|" +
+                ".......X|" +
+                ".....X.X";
+
+            var world = new World(strInitial, true);
+
+            var actualGeneration = world.NextGeneration();
+
+            var strNext =
+                "......XX|" +
+                "........|" +
+                "........|" +
+                "......X.|" +
+                "X......X";
 
             var expectedGeneration = HelperMethods.StringToMatrix(strNext, true);
 

@@ -96,5 +96,19 @@ namespace Tests.Tests
             var edge = new Edge(world.CurrentWorld);
             Assert.AreEqual(2, edge.NeighboursAtOpposite(2, 3));
         }
+
+        [TestMethod]
+        public void NeighboursAtOpposite_BottomRightCorner_returns3()
+        {
+            var strInitial =
+                ".....X|" +
+                "......|" +
+                "......|" +
+                "X....X";
+
+            var world = new World(strInitial);
+            var edge = new Edge(world.CurrentWorld);
+            Assert.AreEqual(3, edge.NeighboursAtOpposite(0, 0));
+        }
     }
 }
