@@ -18,13 +18,13 @@ namespace GameOfLife
         public List<List<Cell>> Extending()
         {
             var edge = new Edge(CurrentWorld);
-            if (edge.TopHas3InRow())
+            if (edge.TopHas3LivingInARow())
                 AddTopRow();
-            if (edge.BottomHas3InRow())
+            if (edge.BottomHas3LivingInARow())
                 AddBottomEdge();
-            if (edge.RightHas3InRow())
+            if (edge.RightHas3LivingInARow())
                 AddRightEdge();
-            if (edge.LeftHas3InRow())
+            if (edge.LeftHas3LivingInARow())
                 AddLeftEdge();
 
             return CurrentWorld;

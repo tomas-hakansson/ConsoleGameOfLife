@@ -6,54 +6,6 @@ namespace GameOfLife
 {
     public class HelperMethods
     {
-        public static List<List<Cell>> GetLivingNeighbours(List<List<Cell>> nextGeneration, bool fixedSize = false)
-        {
-            var x = 0;
-            var y = 0;
-            foreach (var rows in nextGeneration)
-            {
-                foreach (var currentCell in rows)
-                {
-                    currentCell.LivingNeighbours = NrOfSuroundingLivingNeighbours(nextGeneration, x, y);
-                    if (fixedSize)
-                    {
-                        var edge = new Edge(nextGeneration);
-                        currentCell.LivingNeighbours += edge.NeighboursAtOpposite(x, y);
-                    }
-                    x++;
-                }
-                x = 0;
-                y++;
-            }
-
-            return nextGeneration;
-        }
-
-        public static LivingNeighbours NrOfSuroundingLivingNeighbours(List<List<Cell>> state, int xOrigin, int yOrigin)
-        {
-            var nr = 0;
-
-            var yMin = yOrigin == 0 ? 0 : yOrigin - 1;
-            var xMin = xOrigin == 0 ? 0 : xOrigin - 1;
-            var yMax = yOrigin == state.Count - 1 ? yOrigin : yOrigin + 1;
-            var xMax = xOrigin == state[0].Count - 1 ? xOrigin : xOrigin + 1;
-
-            for (int x = xMin; x <= xMax; x++)
-            {
-                for (int y = yMin; y <= yMax; y++)
-                {
-                    var currentCell = state[y][x];
-                    if (currentCell.State == State.Alive)
-                        nr++;
-                }
-            }
-
-            if (state[yOrigin][xOrigin].State == State.Alive)
-                nr--;
-
-            return (LivingNeighbours)nr;
-        }
-
         public static List<List<Cell>> StringToMatrix(string source, bool fixedSize)
         {
             var world = new List<List<Cell>>();
@@ -73,7 +25,8 @@ namespace GameOfLife
                 }
                 world.Add(row);
             }
-            return GetLivingNeighbours(world, fixedSize);
+            var neighbour = new Neighbour(world);
+            return neighbour.UpdateWorldWithLivingNeighbours(fixedSize);
         }
 
         public static string MatrixToString(List<List<Cell>> matrix)

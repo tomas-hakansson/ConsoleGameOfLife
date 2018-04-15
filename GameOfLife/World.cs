@@ -9,7 +9,8 @@ namespace GameOfLife
 
         public World(List<List<Cell>> CurrentWorld, bool fixedSize = false)
         {
-            this.CurrentWorld = HelperMethods.GetLivingNeighbours(CurrentWorld, fixedSize);
+            var neighbour = new Neighbour(CurrentWorld);
+            this.CurrentWorld = neighbour.UpdateWorldWithLivingNeighbours(fixedSize);
             this.FixedSize = fixedSize;
         }
 
@@ -26,7 +27,8 @@ namespace GameOfLife
                 var extendWorld = new ExtendWorld(CurrentWorld);
                 CurrentWorld = extendWorld.Extending();
                 //because the extended world has no neighbour information.
-                CurrentWorld = HelperMethods.GetLivingNeighbours(CurrentWorld);
+                var neighbour = new Neighbour(CurrentWorld);
+                CurrentWorld = neighbour.UpdateWorldWithLivingNeighbours();
             }
 
             var nextGeneration = GetNewState(CurrentWorld);

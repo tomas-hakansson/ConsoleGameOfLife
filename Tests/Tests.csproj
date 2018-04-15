@@ -48,6 +48,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests\NeighbourTests.cs" />
     <Compile Include="Tests\ArgParserTests.cs" />
     <Compile Include="Tests\CellTests.cs" />
     <Compile Include="Tests\EdgeTests.cs" />
