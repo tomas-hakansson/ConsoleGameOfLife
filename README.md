@@ -1,5 +1,5 @@
 I recently participated in my first programming meetup. We where given the simple task of implementing [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life).
-I had previously avoided this, not because i found the program logic challenging but because i find any form of graphics challenging (including console applications). So this was a good opportunity to leave my comfort zone.
+I had previously avoided this, not because i found the program logic challenging but because i find any form of graphics challenging (including console applications), so this was a good opportunity to leave my comfort zone.
 
 The program takes up to four flags:
 * -s for source, the inital world state.

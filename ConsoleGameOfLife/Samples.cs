@@ -9,11 +9,9 @@ namespace ConsoleGameOfLife
     class Samples
     {
         private static string glider =
-               ".......|" +
-               "....X..|" +
-               "..X.X..|" +
-               "...XX..|" +
-               "......."; 
+               "..X|" +
+               "X.X|" +
+               ".XX|"; 
 
         private static string pulsar =
                 ".................|" +
