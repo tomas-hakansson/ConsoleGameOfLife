@@ -28,3 +28,5 @@ If the -f flag has been set then they act as the max size.
 > gameOfLife -s glider -w 20 -h 20 -f
 
 If the -f flag is absent the world will grow indefinitely (assuming the automatons in the world move in a direction) otherwise the world wraps around like a torus.
+
+When the program is running it can be shut down by pressing the 'q' key, paused by pressing the 'p' key and while paused can be stepped between the generations one-by-one by pressing the 's' key, pressing the 'r' key resumes the program.
